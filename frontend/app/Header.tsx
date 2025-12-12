@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
-import { useWallet } from "./providers/WalletProvider";
+import { useWeb3 } from "./providers/Web3Provider";
 
 export default function Header() {
-  const { connectWallet, formatedAddress, isConnected, disconnect } = useWallet();
+  const { connectWallet, formatedAddress, isConnected, disconnect } = useWeb3();
   
   return (
     <header className="flex justify-between items-center p-4">

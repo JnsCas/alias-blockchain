@@ -1,0 +1,39 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-5991b97c78a3e3f29c5af195799deabd08fbb0fa",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/AliasStorage.sol": "project/contracts/AliasStorage.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/AliasStorage.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.28;\n\ncontract AliasStorage {\n  mapping(address => string) public aliases;\n  mapping(string => address) public addresses;\n\n  function setAlias(string memory _alias) public {\n    require(addresses[_alias] == address(0), \"Alias already exists\");\n    aliases[msg.sender] = _alias;\n    addresses[_alias] = msg.sender;\n  }\n\n  function getAliasByAddress(address addr) public view returns (string memory) {\n    return aliases[addr];\n  }\n\n  function getAddressByAlias(string memory _alias) public view returns (address) {\n    return addresses[_alias];\n  }\n\n  function deleteMyAlias() public {\n    require(bytes(aliases[msg.sender]).length > 0, \"You don't have an alias\");\n    delete addresses[aliases[msg.sender]];\n    delete aliases[msg.sender];\n  }\n}\n"
+      }
+    }
+  }
+}

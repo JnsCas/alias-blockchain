@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "./Header";
-import { WalletProvider } from "./providers/WalletProvider";
+import { Web3Provider } from "./providers/Web3Provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,13 +32,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <WalletProvider>
+        <Web3Provider>
           <Header />
           {children}
           <footer className="text-center text-sm text-gray-500 p-4">
             <p>Copyright 2025 human alias for crypto wallets</p>
           </footer>
-        </WalletProvider>
+        </Web3Provider>
       </body>
     </html>
   );

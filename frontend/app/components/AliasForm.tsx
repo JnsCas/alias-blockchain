@@ -29,19 +29,15 @@ export default function AliasForm() {
   };
 
   return (
-    <div className="border-t border-gray-300 dark:border-gray-700 pt-6">
+    <div>
       <form onSubmit={handleCreateAlias} className="flex flex-col gap-3">
         <div>
-          <label htmlFor="alias-input" className="block text-sm font-bold mb-2 text-gray-700 dark:text-gray-300">
-            {currentAlias ? "update your alias" : "create a new alias"}
-          </label>
           <input
-            id="alias-input"
             type="text"
             value={aliasInput}
             onChange={(e) => setAliasInput(e.target.value)}
-            placeholder="enter your alias..."
-            className="w-full p-2.5 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm"
+            placeholder="enter your new alias..."
+            className="w-full p-2.5 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm text-center"
             disabled={isCreating}
           />
         </div>

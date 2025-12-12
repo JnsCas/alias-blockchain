@@ -1,6 +1,7 @@
 "use client";
 import CopyToClipboard from "./CopyToClipboard";
 import { useWeb3 } from "../providers/Web3Provider";
+import AliasForm from "./AliasForm";
 
 export default function ProfileInfo() {
   const { address, currentAlias, aliasStorageService, setCurrentAlias } = useWeb3();
@@ -30,15 +31,16 @@ export default function ProfileInfo() {
             <CopyToClipboard text={currentAlias} />
           </div>
         )}
+
+        <AliasForm />
+
         {currentAlias && (
-          <div className="flex flex-col gap-2">
           <button
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2.5 rounded-md font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+            className="w-full bg-red-500 hover:bg-red-600 text-white px-4 py-2.5 rounded-md font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             onClick={handleDeleteAlias}
           >
             delete alias
           </button>
-          </div>
         )}
       </div>
     </div>

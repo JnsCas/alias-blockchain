@@ -33,9 +33,9 @@ export default function Home() {
       <div className="flex flex-col items-center justify-center h-[calc(100vh-8rem)] px-4">
         <div className="w-full max-w-4xl space-y-12">
           <div className="text-center">
-            <h1 className="text-8xl font-bold py-8 text-center">human alias for crypto wallets</h1>
+            <h1 className="text-8xl font-bold py-6 text-center">human alias for crypto wallets</h1>
             <p className="text-lg text-gray-500 max-w-2xl mx-auto text-center">
-              Create memorable, human-readable aliases for your crypto wallet addresses using the power of blockchain.
+              using blockchain to create human-readable aliases for your crypto wallet addresses.
             </p>
           </div>
 

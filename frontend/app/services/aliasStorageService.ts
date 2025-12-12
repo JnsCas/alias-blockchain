@@ -1,7 +1,6 @@
-import { type Address, type PublicClient, type WalletClient } from 'viem';
-import { readContract, writeContract } from 'viem/actions';
-import { aliasStorageAbi, ALIAS_STORAGE_ADDRESS } from '../../contracts';
-import { isAddress } from 'viem';
+import { isAddress, SimulateContractParameters, WriteContractParameters, type Address, type PublicClient, type WalletClient } from 'viem';
+import { readContract, simulateContract, writeContract } from 'viem/actions';
+import { ALIAS_STORAGE_ADDRESS, aliasStorageAbi } from '../../contracts';
 
 /**
  * AliasStorage Contract Service
@@ -88,7 +87,7 @@ export class AliasStorageService {
   async setAlias(alias: string): Promise<Address> {
     try {
       const [account] = await this.walletClient.getAddresses();
-      const hash = await writeContract(this.walletClient, {
+      const hash = await this.sendWalletWriteTransaction({
         account,
         chain: this.walletClient.chain,
         address: this.contractAddress,
@@ -122,6 +121,17 @@ export class AliasStorageService {
       console.error("Error deleting alias:", error);
       throw error;
     }
+  }
+
+  private async sendWalletWriteTransaction(transactionRequest: WriteContractParameters) {
+    console.log("Sending simulated transaction...");
+    const { request } = await simulateContract(this.walletClient, transactionRequest as SimulateContractParameters);
+    console.log("Simulated transaction sent successfully");
+    console.log("Writing transaction...");
+    const hash = await writeContract(this.walletClient, request as WriteContractParameters);
+    console.log("Transaction written successfully");
+    console.log("Hash:", hash);
+    return hash;
   }
 }
 

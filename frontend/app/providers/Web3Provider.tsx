@@ -7,12 +7,12 @@ import { hardhat, mainnet } from 'viem/chains';
 interface Web3ContextType {
   address: Address | null;
   formatedAddress: string | null;
-  walletClient: WalletClient | null;
-  publicClient: PublicClient | null;
   connectWallet: () => Promise<void>;
   isConnected: boolean;
   disconnect: () => Promise<void>;
   aliasStorageService: AliasStorageService | null;
+  currentAlias: string | null;
+  setCurrentAlias: (alias: string) => void;
 }
 
 const Web3Context = createContext<Web3ContextType | undefined>(undefined);
@@ -23,7 +23,8 @@ export function Web3Provider({ children }: { children: ReactNode }) {
   const [address, setAddress] = useState<Address | null>(null);
   const [formatedAddress, setFormatedAddress] = useState<string | null>(null);
   const [aliasStorageService, setAliasStorageService] = useState<AliasStorageService | null>(null);
-  
+  const [currentAlias, setCurrentAlias] = useState<string | null>(null);
+
   const connectWallet = async () => {
     if (!(window as any).ethereum) {
       alert("No wallet found");
@@ -46,6 +47,11 @@ export function Web3Provider({ children }: { children: ReactNode }) {
     setAliasStorageService(aliasStorageService);
     
     const [address] = await walletClient.requestAddresses();
+    if (address) {
+      const alias = await aliasStorageService.getAliasByAddress(address);
+      setCurrentAlias(alias);
+    }
+
     setWalletClient(walletClient);
     setPublicClient(pubClient);
     setAddress(address);
@@ -53,10 +59,14 @@ export function Web3Provider({ children }: { children: ReactNode }) {
   };
 
   const disconnect = async () => {
+    console.log("Disconnecting wallet...");
     setWalletClient(null);
     setPublicClient(null);
     setAddress(null);
     setFormatedAddress(null);
+    setAliasStorageService(null);
+    setCurrentAlias(null);
+    console.log("Wallet disconnected");
   };
 
   return (
@@ -64,12 +74,12 @@ export function Web3Provider({ children }: { children: ReactNode }) {
       value={{
         address,
         formatedAddress,
-        walletClient,
-        publicClient,
         connectWallet,
         isConnected: !!address,
         disconnect,
         aliasStorageService,
+        currentAlias,
+        setCurrentAlias,
       }}
     >
       {children}

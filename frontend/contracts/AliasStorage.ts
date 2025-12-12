@@ -3,104 +3,104 @@ import type { Abi } from 'viem';
 /**
  * AliasStorage Contract ABI
  * 
- * Keep this in sync with the deployed contract version.
+ * This file is auto-generated from the compiled contract artifact in web3 project.
+ * To regenerate: Run 'npm run compile' in web3 project root directory.
  */
 export const aliasStorageAbi = [
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: "string",
-        name: "",
-        type: "string"
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
-    name: "addresses",
-    outputs: [
+    "name": "addressesByAlias",
+    "outputs": [
       {
-        internalType: "address",
-        name: "",
-        type: "address"
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
-    stateMutability: "view",
-    type: "function"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: "address",
-        name: "",
-        type: "address"
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
-    name: "aliases",
-    outputs: [
+    "name": "aliasesByAddress",
+    "outputs": [
       {
-        internalType: "string",
-        name: "",
-        type: "string"
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
-    stateMutability: "view",
-    type: "function"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: "deleteMyAlias",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
+    "inputs": [],
+    "name": "deleteMyAlias",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: "string",
-        name: "_alias",
-        type: "string"
+        "internalType": "string",
+        "name": "_alias",
+        "type": "string"
       }
     ],
-    name: "getAddressByAlias",
-    outputs: [
+    "name": "getAddressByAlias",
+    "outputs": [
       {
-        internalType: "address",
-        name: "",
-        type: "address"
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
-    stateMutability: "view",
-    type: "function"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: "address",
-        name: "addr",
-        type: "address"
+        "internalType": "address",
+        "name": "addr",
+        "type": "address"
       }
     ],
-    name: "getAliasByAddress",
-    outputs: [
+    "name": "getAliasByAddress",
+    "outputs": [
       {
-        internalType: "string",
-        name: "",
-        type: "string"
+        "internalType": "string",
+        "name": "",
+        "type": "string"
       }
     ],
-    stateMutability: "view",
-    type: "function"
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: "string",
-        name: "_alias",
-        type: "string"
+        "internalType": "string",
+        "name": "_alias",
+        "type": "string"
       }
     ],
-    name: "setAlias",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function"
+    "name": "setAlias",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
 ] as const satisfies Abi;
-

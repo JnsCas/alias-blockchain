@@ -2,7 +2,11 @@
   "name": "contracts",
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "compile": "npx hardhat compile && npx hardhat run scripts/update-abi-in-frontend.ts"
+  },
   "devDependencies": {
+    "@faker-js/faker": "^10.1.0",
     "@nomicfoundation/hardhat-ignition": "^3.0.6",
     "@nomicfoundation/hardhat-toolbox-viem": "^5.0.1",
     "@types/node": "^22.19.2",

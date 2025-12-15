@@ -3,6 +3,7 @@ import { createContext, ReactNode, useContext, useState } from 'react';
 import { type Address, createWalletClient, createPublicClient, custom, type WalletClient, type PublicClient } from 'viem';
 import { AliasStorageService } from '../services/aliasStorageService';
 import { hardhat, mainnet } from 'viem/chains';
+import { formatAddress } from '../util';
 
 interface Web3ContextType {
   address: Address | null;
@@ -18,8 +19,6 @@ interface Web3ContextType {
 const Web3Context = createContext<Web3ContextType | undefined>(undefined);
 
 export function Web3Provider({ children }: { children: ReactNode }) {
-  const [walletClient, setWalletClient] = useState<WalletClient | null>(null);
-  const [publicClient, setPublicClient] = useState<PublicClient | null>(null);
   const [address, setAddress] = useState<Address | null>(null);
   const [formatedAddress, setFormatedAddress] = useState<string | null>(null);
   const [aliasStorageService, setAliasStorageService] = useState<AliasStorageService | null>(null);
@@ -52,16 +51,12 @@ export function Web3Provider({ children }: { children: ReactNode }) {
       setCurrentAlias(alias);
     }
 
-    setWalletClient(walletClient);
-    setPublicClient(pubClient);
     setAddress(address);
-    setFormatedAddress(address!.slice(0, 6) + "..." + address!.slice(-4));
+    setFormatedAddress(formatAddress(address!));
   };
 
   const disconnect = async () => {
     console.log("Disconnecting wallet...");
-    setWalletClient(null);
-    setPublicClient(null);
     setAddress(null);
     setFormatedAddress(null);
     setAliasStorageService(null);

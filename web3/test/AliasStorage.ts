@@ -2,13 +2,11 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { network } from "hardhat";
 import { faker } from "@faker-js/faker";
-import { getAddress } from "viem";
+import { getAddress, zeroAddress } from "viem";
 
 function generateRandomAlias(): string {
   return faker.string.alphanumeric({ length: { min: 1, max: 20 } });
 }
-
-const ZERO_ADDRESS = getAddress("0x0000000000000000000000000000000000000000");
 
 describe("AliasStorage", async function () {
   const { viem } = await network.connect();
@@ -50,7 +48,7 @@ describe("AliasStorage", async function () {
     const retrievedAlias = await aliasStorage.read.getAliasByAddress([addressSender]);
     const retrievedAddress = await aliasStorage.read.getAddressByAlias([newAlias]);
 
-    assert.equal(getAddress(retrievedOldAddress), ZERO_ADDRESS);
+    assert.equal(getAddress(retrievedOldAddress), zeroAddress);
     assert.equal(retrievedAlias, newAlias);
     assert.equal(getAddress(retrievedAddress), addressSender);
   });
@@ -67,6 +65,16 @@ describe("AliasStorage", async function () {
     const retrievedAddress = await aliasStorage.read.getAddressByAlias([alias]);
     
     assert.equal(retrievedAlias, "");
-    assert.equal(getAddress(retrievedAddress), ZERO_ADDRESS);
+    assert.equal(getAddress(retrievedAddress), zeroAddress);
+  });
+
+  it("Should get the alias count", async function () {
+    const aliasStorage = await viem.deployContract("AliasStorage");
+
+    const alias = generateRandomAlias();
+    await aliasStorage.write.setAlias([alias]);
+
+    const aliasCount = await aliasStorage.read.aliasCount();
+    assert.equal(aliasCount.toString(), "1");
   });
 });

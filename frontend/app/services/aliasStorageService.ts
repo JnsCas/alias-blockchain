@@ -1,10 +1,10 @@
-import { isAddress, SimulateContractParameters, WriteContractParameters, type Address, type PublicClient, type WalletClient } from 'viem';
+import { isAddress, SimulateContractParameters, WriteContractParameters, zeroAddress, type Address, type PublicClient, type WalletClient } from 'viem';
 import { readContract, simulateContract, writeContract } from 'viem/actions';
 import { ALIAS_STORAGE_ADDRESS, aliasStorageAbi } from '../../contracts';
 
 /**
  * AliasStorage Contract Service
- * 
+ *
  * Encapsulates all contract interactions for AliasStorage.
  */
 export class AliasStorageService {
@@ -29,7 +29,7 @@ export class AliasStorageService {
       });
 
       // If result is zero address, alias doesn't exist
-      if (result === "0x0000000000000000000000000000000000000000") {
+      if (result === zeroAddress) {
         return null;
       }
       return result as Address;
@@ -133,5 +133,22 @@ export class AliasStorageService {
     console.log("Hash:", hash);
     return hash;
   }
-}
 
+  /**
+   * Get total number of aliases registered
+   * @returns The current count of aliases
+   */
+  async getAliasCount(): Promise<bigint> {
+    try {
+      const result = await readContract(this.client, {
+        address: this.contractAddress,
+        abi: aliasStorageAbi,
+        functionName: "aliasCount",
+      });
+      return result as bigint;
+    } catch (error) {
+      console.error("Error getting alias count:", error);
+      throw error;
+    }
+  }
+}

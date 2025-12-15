@@ -34,4 +34,25 @@ contract AliasStorageTest is Test {
     assertEq(aliasStorage.getAddressByAlias("test3"), address(0));
   }
 
+  function test_GetAliasCount() public {
+    assertEq(aliasStorage.aliasCount(), 0);
+    
+    // First user creates alias
+    aliasStorage.setAlias("test5");
+    assertEq(aliasStorage.aliasCount(), 1);
+    
+    // Same user updates alias - count should stay 1
+    aliasStorage.setAlias("test6");
+    assertEq(aliasStorage.aliasCount(), 1);
+    
+    // Different user creates alias - count should become 2
+    vm.prank(address(0x1234));
+    aliasStorage.setAlias("test7");
+    assertEq(aliasStorage.aliasCount(), 2);
+    
+    // First user deletes alias - count should become 1
+    aliasStorage.deleteMyAlias();
+    assertEq(aliasStorage.aliasCount(), 1);
+  }
+
 }

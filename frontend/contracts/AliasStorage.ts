@@ -27,6 +27,19 @@ export const aliasStorageAbi = [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "aliasCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",

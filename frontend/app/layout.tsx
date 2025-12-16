@@ -30,11 +30,13 @@ export default function RootLayout({
         <title>Human Alias for Crypto Wallets</title>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <Web3Provider>
           <Header />
-          {children}
+          <div className="flex-1">
+            {children}
+          </div>
           <footer className="text-center text-sm text-gray-500 p-4">
             <p>Copyright 2025 human alias for crypto wallets</p>
           </footer>

@@ -1,49 +1,31 @@
 "use client";
-import CopyToClipboard from "./CopyToClipboard";
 import { useWeb3 } from "../providers/Web3Provider";
-import AliasForm from "./AliasForm";
+import CopyToClipboard from "./CopyToClipboard";
 
-export default function ProfileInfo() {
-  const { address, currentAlias, aliasStorageService, setCurrentAlias } = useWeb3();
-
-  const handleDeleteAlias = async () => {
-    if (!aliasStorageService) {
-      return;
-    }
-    await aliasStorageService.deleteAlias();
-    setCurrentAlias("");
-    alert("Alias deleted successfully!");
-  };
+export default function UserInfo() {
+  const { address, currentAlias } = useWeb3();
 
   return (
-    <div className="pb-6">
-      <div className="mb-4">
-        <h2 className="text-xl font-bold">your profile</h2>
-      </div>
-      <div className="space-y-3">
-        <div className="text-center">
-          <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wide">address</span>
-          <CopyToClipboard text={address!} />
+    <div className="space-y-4">
+      <div>
+        <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          Wallet Address
+        </label>
+        <div className="mt-2">
+          <CopyToClipboard text={address!} variant="dark" />
         </div>
-        {currentAlias && (
-          <div>
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 tracking-wide">alias</span>
-            <CopyToClipboard text={currentAlias} />
-          </div>
-        )}
-
-        <AliasForm />
-
-        {currentAlias && (
-          <button
-            className="w-full bg-red-500 hover:bg-red-600 text-white px-4 py-2.5 rounded-md font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
-            onClick={handleDeleteAlias}
-          >
-            delete alias
-          </button>
-        )}
       </div>
+
+      {currentAlias && (
+        <div>
+          <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            Your Alias
+          </label>
+          <div className="mt-2">
+            <CopyToClipboard text={currentAlias} variant="accent" />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
-

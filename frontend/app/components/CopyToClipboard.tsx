@@ -1,7 +1,12 @@
 "use client";
 import { useState } from "react";
 
-export default function CopyToClipboard({ text }: { text: string }) {
+type CopyToClipboardProps = {
+  text: string;
+  variant?: "light" | "dark" | "accent";
+};
+
+export default function CopyToClipboard({ text, variant = "light" }: CopyToClipboardProps) {
   const [copied, setCopied] = useState(false);
 
   const copyIcon = (
@@ -38,14 +43,34 @@ export default function CopyToClipboard({ text }: { text: string }) {
     }
   };
 
+  const styles = {
+    light: {
+      container: "bg-white/90 border border-gray-200",
+      code: "text-emerald-800",
+      button: "text-emerald-600 hover:bg-emerald-100",
+    },
+    dark: {
+      container: "bg-slate-800/50 border border-slate-700",
+      code: "text-slate-300",
+      button: "text-slate-500 hover:text-blue-400 hover:bg-slate-700",
+    },
+    accent: {
+      container: "bg-emerald-500/10 border border-emerald-500/30",
+      code: "text-emerald-400 font-semibold",
+      button: "text-emerald-500 hover:text-emerald-300 hover:bg-emerald-500/20",
+    },
+  };
+
+  const style = styles[variant];
+
   return (
-    <div className="flex items-center justify-between gap-4 p-3 bg-white/90 rounded-xl border border-gray-200">
-      <code className="text-emerald-800 font-mono text-sm break-all">
+    <div className={`flex items-center justify-between gap-4 p-3 rounded-xl ${style.container}`}>
+      <code className={`font-mono text-sm break-all ${style.code}`}>
         {text}
       </code>
       <button
         onClick={handleCopy}
-        className="shrink-0 p-2 rounded-lg text-emerald-600 hover:bg-emerald-100 transition-colors"
+        className={`shrink-0 p-2 rounded-lg transition-colors ${style.button}`}
         title={copied ? "Copied!" : "Copy to clipboard"}
       >
         {copied ? checkIcon : copyIcon}

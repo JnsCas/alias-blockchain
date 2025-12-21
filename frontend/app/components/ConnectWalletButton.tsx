@@ -30,6 +30,7 @@ export default function ConnectWalletButton() {
         <MetaMaskIcon />
         Connect with MetaMask
       </button>
+      <span className="text-sm text-gray-500">Only available on Sepolia testnet</span>
     </div>
   );
 }

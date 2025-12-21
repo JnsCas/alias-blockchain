@@ -1,7 +1,7 @@
 "use client";
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { type Address, createPublicClient, createWalletClient, custom } from 'viem';
-import { hardhat, mainnet } from 'viem/chains';
+import { hardhat, sepolia } from 'viem/chains';
 import { AliasStorageService } from '../services/aliasStorageService';
 import { formatAddress } from '../util';
 
@@ -24,7 +24,7 @@ const initClients = () => {
     alert("No wallet found. Please install MetaMask.");
     throw new Error("No wallet found. Please install MetaMask.");
   }
-  const chain = process.env.NODE_ENV === "development" ? hardhat : mainnet;
+  const chain = process.env.NODE_ENV === "development" ? hardhat : sepolia;
   const walletClient = createWalletClient({
     chain: chain,
     transport: custom(ethereum)

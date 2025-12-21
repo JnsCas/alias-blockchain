@@ -1,8 +1,8 @@
 "use client";
-import { createContext, ReactNode, useContext, useState } from 'react';
-import { type Address, createWalletClient, createPublicClient, custom, type WalletClient, type PublicClient } from 'viem';
-import { AliasStorageService } from '../services/aliasStorageService';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { type Address, createPublicClient, createWalletClient, custom } from 'viem';
 import { hardhat, mainnet } from 'viem/chains';
+import { AliasStorageService } from '../services/aliasStorageService';
 import { formatAddress } from '../util';
 
 interface Web3ContextType {
@@ -18,30 +18,45 @@ interface Web3ContextType {
 
 const Web3Context = createContext<Web3ContextType | undefined>(undefined);
 
+const initClients = () => {
+  const ethereum = (window as any).ethereum;
+  if (!ethereum) {
+    alert("No wallet found. Please install MetaMask.");
+    throw new Error("No wallet found. Please install MetaMask.");
+  }
+  const chain = process.env.NODE_ENV === "development" ? hardhat : mainnet;
+  const walletClient = createWalletClient({
+    chain: chain,
+    transport: custom(ethereum)
+  });
+  const pubClient = createPublicClient({
+    chain: chain,
+    transport: custom(ethereum)
+  });
+  return { walletClient, pubClient };
+}
+
 export function Web3Provider({ children }: { children: ReactNode }) {
   const [address, setAddress] = useState<Address | null>(null);
   const [formatedAddress, setFormatedAddress] = useState<string | null>(null);
   const [aliasStorageService, setAliasStorageService] = useState<AliasStorageService | null>(null);
   const [currentAlias, setCurrentAlias] = useState<string | null>(null);
 
+  useEffect(() => {
+    const reconnect = async () => {
+      const ethereum = (window as any).ethereum;
+      // eth_accounts doesn't prompt the user - it just checks if already connected
+      const accounts = await ethereum.request({ method: 'eth_accounts' });
+      if (accounts && accounts.length > 0) {
+        connectWallet();       
+      }
+    };
+    
+    reconnect();
+  }, []);
+
   const connectWallet = async () => {
-    if (!(window as any).ethereum) {
-      alert("No wallet found");
-      return;
-    }
-    const ethereum = (window as any).ethereum;
-    const chain = process.env.NODE_ENV === "development" ? hardhat : mainnet;
-    
-    const walletClient = createWalletClient({
-        chain: chain,
-        transport: custom(ethereum)
-    });
-    
-    const pubClient = createPublicClient({
-        chain: chain,
-        transport: custom(ethereum)
-    });
-    
+    const { walletClient, pubClient } = initClients();
     const aliasStorageService = new AliasStorageService(pubClient, walletClient);
     setAliasStorageService(aliasStorageService);
     
@@ -57,11 +72,21 @@ export function Web3Provider({ children }: { children: ReactNode }) {
 
   const disconnect = async () => {
     console.log("Disconnecting wallet...");
-    setAddress(null);
-    setFormatedAddress(null);
-    setAliasStorageService(null);
-    setCurrentAlias(null);
-    console.log("Wallet disconnected");
+    
+    const ethereum = (window as any).ethereum;
+    if (ethereum) {
+      await ethereum.request({
+        method: 'wallet_revokePermissions',
+        params: [{ eth_accounts: {} }]
+      });
+      setAddress(null);
+      setFormatedAddress(null);
+      setAliasStorageService(null);
+      setCurrentAlias(null);
+      console.log("Wallet disconnected");
+    } else {
+      console.log("No wallet found");
+    }
   };
 
   return (

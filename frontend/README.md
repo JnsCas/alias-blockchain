@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Alias Blockchain - Frontend
+
+Next.js application for interacting with the AliasStorage smart contract.
+
+## Tech Stack
+
+- **Next.js** - React framework with App Router
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first styling
+- **Viem** - TypeScript Ethereum library for wallet interactions
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- MetaMask browser extension
+- Sepolia testnet ETH ([faucet](https://cloud.google.com/application/web3/faucet/ethereum/sepolia))
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+## Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_ALIAS_STORAGE_ADDRESS` | Deployed contract address |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Contract addresses by network:**
+- **Sepolia:** `0xC391FB6992BF56b1De0DcD7d93a00364289F1BF8`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+frontend/
+├── app/
+│   ├── components/     # React components
+│   │   ├── AliasForm.tsx
+│   │   ├── ConnectWalletButton.tsx
+│   │   ├── Search.tsx
+│   │   └── ...
+│   ├── providers/      # Web3 context provider
+│   ├── services/       # Blockchain service layer
+│   └── page.tsx        # Main page
+└── contracts/          # ABI and contract address
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Docker
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Build and run with Docker:
+
+```bash
+docker build \
+  --build-arg NEXT_PUBLIC_ALIAS_STORAGE_ADDRESS=0xC391FB6992BF56b1De0DcD7d93a00364289F1BF8 \
+  -t alias-blockchain-frontend .
+```
+```bash
+docker run -p 3000:3000 alias-blockchain-frontend
+```

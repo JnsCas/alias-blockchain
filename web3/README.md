@@ -1,57 +1,105 @@
-# Sample Hardhat 3 Beta Project (`node:test` and `viem`)
+# Alias Blockchain - Smart Contracts
 
-This project showcases a Hardhat 3 Beta project using the native Node.js test runner (`node:test`) and the `viem` library for Ethereum interactions.
+Solidity smart contracts for the decentralized alias registry.
 
-To learn more about the Hardhat 3 Beta, please visit the [Getting Started guide](https://hardhat.org/docs/getting-started#getting-started-with-hardhat-3). To share your feedback, join our [Hardhat 3 Beta](https://hardhat.org/hardhat3-beta-telegram-group) Telegram group or [open an issue](https://github.com/NomicFoundation/hardhat/issues/new) in our GitHub issue tracker.
+## Tech Stack
 
-## Project Overview
+- **Solidity** - Smart contract language
+- **Hardhat 3** - Development environment
+- **Hardhat Ignition** - Deployment management
+- **Viem** - TypeScript Ethereum library for tests
 
-This example project includes:
+## Getting Started
 
-- A simple Hardhat configuration file.
-- Foundry-compatible Solidity unit tests.
-- TypeScript integration tests using [`node:test`](nodejs.org/api/test.html), the new Node.js native test runner, and [`viem`](https://viem.sh/).
-- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
+### Prerequisites
 
-## Usage
+- Node.js 20+
 
-### Running Tests
+### Installation
 
-To run all the tests in the project, execute the following command:
-
-```shell
-npx hardhat test
+```bash
+npm install
 ```
 
-You can also selectively run the Solidity or `node:test` tests:
+### Compile Contracts
 
-```shell
+```bash
+npm run compile
+```
+
+This compiles the contracts and automatically updates the ABI in the frontend.
+
+### Run Tests
+
+```bash
+# Run all tests
+npx hardhat test
+
+# Run only Solidity tests
 npx hardhat test solidity
+
+# Run only Node.js tests
 npx hardhat test nodejs
 ```
 
-### Make a deployment to Sepolia
+## Deployment
 
-This project includes an example Ignition module to deploy the contract. You can deploy this module to a locally simulated chain or to Sepolia.
+### Local Network
 
-To run the deployment to a local chain:
-
-```shell
-npx hardhat ignition deploy ignition/modules/Counter.ts
+```bash
+npx hardhat ignition deploy ignition/modules/AliasStorage.ts
 ```
 
-To run the deployment to Sepolia, you need an account with funds to send the transaction. The provided Hardhat configuration includes a Configuration Variable called `SEPOLIA_PRIVATE_KEY`, which you can use to set the private key of the account you want to use.
+### Sepolia Testnet
 
-You can set the `SEPOLIA_PRIVATE_KEY` variable using the `hardhat-keystore` plugin or by setting it as an environment variable.
+First, set your private key:
 
-To set the `SEPOLIA_PRIVATE_KEY` config variable using `hardhat-keystore`:
-
-```shell
+```bash
 npx hardhat keystore set SEPOLIA_PRIVATE_KEY
 ```
 
-After setting the variable, you can run the deployment with the Sepolia network:
+Then deploy:
 
-```shell
-npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
+```bash
+npx hardhat ignition deploy --network sepolia ignition/modules/AliasStorage.ts
 ```
+
+## Contract API
+
+The `AliasStorage` contract provides:
+
+```solidity
+// Register or update your alias
+function setAlias(string memory _alias) public
+
+// Look up an alias by address
+function getAliasByAddress(address addr) public view returns (string memory)
+
+// Look up an address by alias
+function getAddressByAlias(string memory _alias) public view returns (address)
+
+// Delete your alias
+function deleteMyAlias() public
+
+// Total number of registered aliases
+uint256 public aliasCount
+```
+
+## Project Structure
+
+```
+web3/
+├── contracts/          # Solidity source files
+│   ├── AliasStorage.sol
+│   └── AliasStorage.t.sol
+├── ignition/
+│   ├── modules/        # Deployment modules
+│   └── deployments/    # Deployment artifacts
+├── test/               # TypeScript tests
+└── scripts/            # Utility scripts
+```
+
+## Deployed Addresses
+
+- **Sepolia:** Check `ignition/deployments/chain-11155111/deployed_addresses.json`
+- **Local:** Check `ignition/deployments/chain-31337/deployed_addresses.json`

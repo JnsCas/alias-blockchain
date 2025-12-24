@@ -52,10 +52,11 @@ npx hardhat ignition deploy ignition/modules/AliasStorage.ts
 
 ### Sepolia Testnet
 
-First, set your private key:
+First, set your private key and RPC URL:
 
 ```bash
 npx hardhat keystore set SEPOLIA_PRIVATE_KEY
+npx hardhat keystore set SEPOLIA_RPC_URL
 ```
 
 Then deploy:
